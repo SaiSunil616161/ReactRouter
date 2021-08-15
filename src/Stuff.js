@@ -9,6 +9,13 @@ const Title = styled.h1`
     padding-top: 4em;
 `;
 
+const TitleOt = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: #ff0000;
+    padding-top: 1em;
+`;
+
 const LastButton = styled.button`
     margin-left: 28%;
     font-size: 18px;
@@ -28,6 +35,7 @@ class Stuff extends Component {
             {!this.state.MainPage && <>
             {this.props.amountType === "debit" && <Title>Mahesh Paid {this.props.amount}</Title>}
             {this.props.amountType === "credit" && <Title>We gave {this.props.amount} to Mahesh</Title>}
+            <TitleOt>He Still needs to pay ____ rupees</TitleOt>
             <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton></>}
             {this.state.MainPage && <Functionalities/>}
         </div>

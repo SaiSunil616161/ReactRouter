@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
 import Stuff from "./Stuff";
  
@@ -60,19 +61,26 @@ const LoginButton = styled.button`
     margin-left: 38%;
     font-size: 18px;
     margin-top: 3%;
-    margin-bottom: 100%;
+    margin-bottom: 40%;
 `;
 
 const ErrorLabel = styled.label`
 margin-left: 23%;
     color: red;
     `;
+
+const LastButton = styled.button`
+    margin-left: 28%;
+    font-size: 18px;
+    margin-bottom: 20%;
+    color: red;
+`;
 class Home extends Component {
     constructor(props) {
         super(props);
         const date = new Date();
         const month = date.getMonth() + 1
-        this.state={id:"", amount:"", dateVal: date.getDate() + '-' + month + '-' + date.getFullYear(), amountType: "", submitted: false}
+        this.state={id:"", amount:"", dateVal: date.getDate() + '-' + month + '-' + date.getFullYear(), amountType: "", submitted: false, MainPage: false}
     }
     setId = (event) => {this.setState({id: event.target.value})};
     setAmount = (event) => {this.setState({amount: event.target.value})};
@@ -87,16 +95,18 @@ class Home extends Component {
             this.setState({submitted: true, loader: false})
         }
     }
+    redirectToEnterLedger = () => {this.setState({MainPage: true})}
     render() {
-        console.log(this.state.amountType)
         return (
         <div>
+            {this.state.MainPage && <Functionalities/>}
+            {!this.state.MainPage && <>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
             <Title>LEDGER</Title>
             <UserLabel>Id: </UserLabel>
-            <input type="text"  onChange={(event)=>{this.setId(event)}}/>
+            <input type="number"  onChange={(event)=>{this.setId(event)}}/>
             {this.state.idError && <><br/><br/><ErrorLabel>Please Enter ID</ErrorLabel></>}
             <br/><br/>
             <AmountLabel>Amount: </AmountLabel>
@@ -112,8 +122,10 @@ class Home extends Component {
             <CreditLabel>Credit</CreditLabel>
             {this.state.dcError && <><br/><br/><ErrorLabel>Please Select Credit/Debit</ErrorLabel></>}
             <LoginButton onClick={()=>{this.proceedSubmit()}}>Submit</LoginButton>
+            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
             </>}
             {this.state.submitted && <Stuff amount={this.state.amount} amountType={this.state.amountType}/>}</>}
+            </>}
         </div>
         );
     }
