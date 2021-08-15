@@ -1,22 +1,38 @@
 import React, { Component } from "react";
- 
+import styled from "styled-components";
+import Functionalities from "./Functionalities";
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: #ff0000;
+    padding-top: 4em;
+`;
+
+const LastButton = styled.button`
+    margin-left: 28%;
+    font-size: 18px;
+    margin-bottom: 125%;
+    color: red;
+`;
+
 class Stuff extends Component {
-  render() {
-    return (
-      <div>
-        <h2>STUFF</h2>
-        <p>Mauris sem velit, vehicula eget sodales vitae,
-        rhoncus eget sapien:</p>
-        <ol>
-          <li>Nulla pulvinar diam</li>
-          <li>Facilisis bibendum</li>
-          <li>Vestibulum vulputate</li>
-          <li>Eget erat</li>
-          <li>Id porttitor</li>
-        </ol>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state={MainPage: false}
+    }
+    redirectToEnterLedger = () => {this.setState({MainPage: true})}
+    render() {
+        return (
+        <div>
+            {!this.state.MainPage && <>
+            {this.props.amountType === "debit" && <Title>Mahesh Paid {this.props.amount}</Title>}
+            {this.props.amountType === "credit" && <Title>We gave {this.props.amount} to Mahesh</Title>}
+            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton></>}
+            {this.state.MainPage && <Functionalities/>}
+        </div>
+        );
+    }
 }
  
 export default Stuff;
