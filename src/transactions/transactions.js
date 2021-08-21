@@ -63,10 +63,10 @@ class Transactions extends Component {
     });
       return (
         <div>
-            {this.props.data.length === 0 && this.state.error && <Label><ErrorLabel> There is no data associated with this Id</ErrorLabel>
-                <LastButton1 onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton1></Label>}
+            {this.props.data.length === 0 && this.state.error && <Label><ErrorLabel> దీనికి సంబంధించిన డేటా ఏదీ లేదు</ErrorLabel>
+                <LastButton1 onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton1></Label>}
             {!this.state.MainPage && this.props.data.length > 0 && <>
-                <ErrorLabel>Final Balance: {this.getFinalBalance(this.props.data)}</ErrorLabel>
+                <ErrorLabel>మొత్తం చెల్లించాల్సింది: {this.getFinalBalance(this.props.data)}</ErrorLabel>
                 <Table border="1" frame="void" rules="rows">
                     <tbody id="content">
                         <tr>
