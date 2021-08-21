@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
 import Stuff from "./Stuff";
+import axios from "axios";
+import { MAIN_URL } from "./constants";
+import RegisterSuccess from "./register/RegisterSuccess";
  
 const Title = styled.h1`
   font-size: 1.5em;
@@ -80,7 +83,7 @@ class Home extends Component {
         super(props);
         const date = new Date();
         const month = date.getMonth() + 1
-        this.state={id:"", amount:"", dateVal: date.getDate() + '-' + month + '-' + date.getFullYear(), amountType: "", submitted: false, MainPage: false}
+        this.state={id:"", amount:"", data: {}, dateVal: date.getDate() + '-' + month + '-' + date.getFullYear(), amountType: "", submitted: false, MainPage: false, beerror: false}
     }
     setId = (event) => {this.setState({id: event.target.value})};
     setAmount = (event) => {this.setState({amount: event.target.value})};
@@ -92,13 +95,28 @@ class Home extends Component {
         if (isNaN(parseInt(this.state.amount))) {this.setState({amountError: true, loader: false})} else {this.setState({amountError: false})}
         if (this.state.amountType === "credit" || this.state.amountType === "debit") {this.setState({dcError: false})} else {this.setState({dcError: true, loader: false})}
         if (!isNaN(parseInt(this.state.id)) && !isNaN(parseInt(this.state.amount)) && this.state.amountType !== "") {
-            this.setState({submitted: true, loader: false})
+            let obj = {};
+            obj.userId = parseInt(this.state.id);
+            obj.amount = this.state.amount;
+            obj.date = this.state.dateVal;
+            obj.transactionType = this.state.amountType;
+            const TRANS_URL = `${MAIN_URL}/addTransaction`
+            axios.post(TRANS_URL ,obj).then(response => {
+                if (response.data) {
+                    this.setState({submitted: true, loader: false, data: response.data});
+                } else {
+                    this.setState({submitted: false, loader: false, beerror: true});
+                }
+            }).catch(error => {
+                this.setState({submitted: false, loader: false, beerror: true});
+            });
         }
     }
     redirectToEnterLedger = () => {this.setState({MainPage: true})}
     render() {
         return (
         <div>
+            {this.state.beerror && <><RegisterSuccess registerPage={false}/></>}
             {this.state.MainPage && <Functionalities/>}
             {!this.state.MainPage && <>
             {this.state.loader && <LoaderComp/>}
@@ -124,7 +142,7 @@ class Home extends Component {
             <LoginButton onClick={()=>{this.proceedSubmit()}}>Submit</LoginButton>
             <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
             </>}
-            {this.state.submitted && <Stuff amount={this.state.amount} amountType={this.state.amountType}/>}</>}
+            {this.state.submitted && <Stuff amount={this.state.amount} remainingAmount={this.state.data.amount} name={this.state.data.name} amountType={this.state.amountType}/>}</>}
             </>}
         </div>
         );

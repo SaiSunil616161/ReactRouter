@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
+import { MAIN_URL } from "../constants";
 import Functionalities from "../Functionalities";
 
 const Table = styled.table`
@@ -10,44 +12,35 @@ border: double;
 const LastButton = styled.button`
     margin-left: 20%;
     font-size: 18px;
-    margin-bottom: 100%;
+    margin-bottom: 150%;
     margin-top: 3%;
     color: red;
 `;
 
+
+const ErrorLabel = styled.label`
+margin-left: 23%;
+    color: red;
+    `;
+
 class Persons extends Component {
     constructor(props) {
         super(props);
-        this.state={data: [
-            {id: 1, name: "Mahesh"},
-            {id: 2, name: "Mahesh"},
-            {id: 3, name: "Mahesh"},
-            {id: 4, name: "Mahesh"},
-            {id: 5, name: "Mahesh"},
-            {id: 6, name: "Mahesh"},
-            {id: 7, name: "Mahesh"},
-            {id: 8, name: "Mahesh"},
-            {id: 9, name: "Mahesh"},
-            {id: 10, name: "Mahesh"},
-            {id: 11, name: "Mahesh"},
-            {id: 12, name: "Mahesh"},
-            {id: 13, name: "Mahesh"},
-            {id: 14, name: "Mahesh"},
-            {id: 15, name: "Mahesh"},
-            {id: 16, name: "Mahesh"},
-            {id: 17, name: "Mahesh"},
-            {id: 18, name: "Mahesh"},
-            {id: 19, name: "Mahesh"},
-            {id: 20, name: "Mahesh"},
-            {id: 21, name: "Mahesh"},
-            {id: 22, name: "Mahesh"},
-            {id: 23, name: "Mahesh"},
-            {id: 24, name: "Mahesh"},
-            {id: 25, name: "Mahesh"},
-            {id: 26, name: "Mahesh"}
-        ], MainPage: false}
+        this.state={data: [], MainPage: false, error: false}
     }
-    redirectToEnterLedger = () => {this.setState({MainPage: true})}
+    componentDidMount() {
+        const GET_ALL = `${MAIN_URL}/getAll`;
+        axios.get(GET_ALL).then(response => {
+            if (response.data) {
+                this.setState({data: response.data});
+            } else {
+                this.setState({error: true});
+            }
+        }).catch(error => {
+            this.setState({error: true});
+        });
+    }
+  redirectToEnterLedger = () => {this.setState({MainPage: true})}
   render(){
     let listItems = this.state.data.map(function(person, i) {
         return(
@@ -59,6 +52,7 @@ class Persons extends Component {
     });
       return (
         <div>
+            {this.state.error && <ErrorLabel> Error While loading details</ErrorLabel>}
             {!this.state.MainPage && <>
                 <Table border="1" frame="void" rules="rows">
                     <tbody id="content">

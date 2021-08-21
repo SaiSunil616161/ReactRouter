@@ -29,9 +29,12 @@ class RegisterSuccess extends Component {
         return (
         <div>
             {!this.state.MainPage && <>
-                <Title>
-                    User Successfully created with Id: 
-                </Title>
+                {this.props.registerPage && <Title>
+                    User Successfully created with Id: {this.props.id}
+                </Title>}
+                {!this.props.registerPage && <Title>
+                    User is not available with given Id
+                </Title>}
                 <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}

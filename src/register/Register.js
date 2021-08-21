@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
+import { MAIN_URL } from "../constants";
 import LoaderComp from "../Loader";
 import RegisterSuccess from "./RegisterSuccess";
  
@@ -33,14 +35,25 @@ margin-left: 23%;
 class Register extends Component {
     constructor(props) {
         super(props);
-        this.state={userName:"", userError: false, userExistingError: false, submitted: false}
+        this.state={userName:"", userError: false, userExistingError: false, submitted: false, id: ""}
     }
     setUsrName = (event) => {this.setState({userName: event.target.value})};
     proceedSubmit = () => {
         this.setState({loader: true})
         if(this.state.userName === "") {this.setState({userError: true, loader: false})} else {this.setState({userError: false})}
         if(this.state.userName !== "") {
-            this.setState({submitted: true, loader: false})
+            const ADD_USER = `${MAIN_URL}/addUser`;
+            let obj = {};
+            obj.name = this.state.userName;
+            axios.post(ADD_USER ,obj).then(response => {
+                if (response.data.id) {
+                    this.setState({userExistingError: false, submitted: true, loader: false, id: response.data.id});
+                } else {
+                    this.setState({userExistingError: true, loader: false});
+                }
+            }).catch(error => {
+                this.setState({userExistingError: true, submitted: false, loader: false});
+            });
         }
     }
     render() {
@@ -56,7 +69,7 @@ class Register extends Component {
             {this.state.userExistingError && <><br/><br/><ErrorLabel>This name is already taken. Please try modifying name</ErrorLabel></>}
             <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>Register User</LoginButton>
             </>}
-            {this.state.submitted && <RegisterSuccess/>}</>}
+            {this.state.submitted && <RegisterSuccess id={this.state.id} registerPage={true}/>}</>}
         </div>
         );
     }

@@ -33,9 +33,9 @@ class Stuff extends Component {
         return (
         <div>
             {!this.state.MainPage && <>
-            {this.props.amountType === "debit" && <Title>Mahesh Paid {this.props.amount}</Title>}
-            {this.props.amountType === "credit" && <Title>We gave {this.props.amount} to Mahesh</Title>}
-            <TitleOt>He Still needs to pay ____ rupees</TitleOt>
+            {this.props.amountType === "debit" && <Title>{this.props.name} Paid {this.props.amount}</Title>}
+            {this.props.amountType === "credit" && <Title>We gave {this.props.amount} to {this.props.name}</Title>}
+            <TitleOt>He Still needs to pay {this.props.remainingAmount} rupees</TitleOt>
             <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton></>}
             {this.state.MainPage && <Functionalities/>}
         </div>

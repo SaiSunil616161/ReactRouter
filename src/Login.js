@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
+import axios from "axios";
+import { MAIN_URL } from "./constants";
 
 const Title = styled.h1`
   font-size: 1.5em;
@@ -46,7 +48,7 @@ margin-left: 23%;
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state={userName:"", password:"", redirectToHome: false}
+        this.state={userName:"", password:"", redirectToHome: false, loginError: false}
     }
     setUserName = (event) => {this.setState({userName: event.target.value})};
     setPassword = (event) => {this.setState({password: event.target.value})};
@@ -55,7 +57,17 @@ class Login extends Component {
         if (this.state.userName === "") {this.setState({userNameError: true, loader: false})} else {this.setState({userNameError: false})}
         if (this.state.password === "") {this.setState({passwordError: true, loader: false})} else {this.setState({passwordError: false})}
         if (this.state.userName !== "" && this.state.password !== "") {
-            this.setState({redirectToHome: true, loader: false})
+            let obj = {};
+            obj.userName = this.state.userName;
+            obj.password = this.state.password;
+            const LOGIN_URL = `${MAIN_URL}/login`
+            axios.post(LOGIN_URL ,obj).then(response => {
+                if (response.data) {
+                    this.setState({redirectToHome: true, loader: false})
+                } else {
+                    this.setState({loginError: true, loader: false})
+                }
+            })
         }
     }
     render() {
@@ -72,6 +84,7 @@ class Login extends Component {
             <input type="password" onChange={(event)=>{this.setPassword(event)}}/>
             {this.state.passwordError && <><br/><br/><ErrorLabel>Please Enter Password</ErrorLabel></>}
             <br/><br/>
+            {this.state.loginError && <ErrorLabel>Please enter correct details</ErrorLabel>}
             <LoginButton onClick={()=>{this.proceedLogin()}}>
                 Log In</LoginButton></>}
             {this.state.redirectToHome && <Functionalities/>}</>}
