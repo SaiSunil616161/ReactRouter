@@ -27,7 +27,7 @@ const AmountLabel = styled.label`
     font-size: 20px;
     color: blue;
     font-family: sans-serif;
-    margin-right: 6%;
+    margin-right: 15%;
     margin-left: 10px;
 `;
 
@@ -35,7 +35,7 @@ const DateLabel = styled.label`
     font-size: 20px;
     color: blue;
     font-family: sans-serif;
-    margin-right: 14%;
+    margin-right: 20%;
     margin-left: 10px;
 `;
 
@@ -61,7 +61,7 @@ font-size: 20px;
     font-family: sans-serif;
 `;
 const LoginButton = styled.button`
-    margin-left: 38%;
+    margin-left: 25%;
     font-size: 18px;
     margin-top: 3%;
     margin-bottom: 40%;
@@ -122,25 +122,25 @@ class Home extends Component {
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
-            <Title>LEDGER</Title>
-            <UserLabel>Id: </UserLabel>
+            <Title>లెడ్జర్</Title>
+            <UserLabel>ఐడి: </UserLabel>
             <input type="number"  onChange={(event)=>{this.setId(event)}}/>
-            {this.state.idError && <><br/><br/><ErrorLabel>Please Enter ID</ErrorLabel></>}
+            {this.state.idError && <><br/><br/><ErrorLabel>దయచేసి ఐడి ని నమోదు చేయండి</ErrorLabel></>}
             <br/><br/>
-            <AmountLabel>Amount: </AmountLabel>
+            <AmountLabel>డబ్బు: </AmountLabel>
             <input type="number"  onChange={(event)=>{this.setAmount(event)}}/>
-            {this.state.amountError && <><br/><br/><ErrorLabel>Please Enter Amount</ErrorLabel></>}
+            {this.state.amountError && <><br/><br/><ErrorLabel>దయచేసి మొత్తాన్ని నమోదు చేయండి</ErrorLabel></>}
             <br/><br/>
-            <DateLabel>Date: </DateLabel>
+            <DateLabel>తేదీ: </DateLabel>
             <input type="text" disabled defaultValue={this.state.dateVal} onChange={(event)=>{this.setDate(event)}}/>
             <br/><br/>
             <DebitInput type="radio" id="debit" name="Debit" value="debit" onClick={()=>{this.setAmountType("debit")}} />
-            <DebitLabel>Debit</DebitLabel>
+            <DebitLabel>డెబిట్</DebitLabel>
             <CreditInput type="radio" id="debit" name="Debit" value="credit" onClick={()=>{this.setAmountType("credit")}}/>
-            <CreditLabel>Credit</CreditLabel>
-            {this.state.dcError && <><br/><br/><ErrorLabel>Please Select Credit/Debit</ErrorLabel></>}
-            <LoginButton onClick={()=>{this.proceedSubmit()}}>Submit</LoginButton>
-            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
+            <CreditLabel>క్రెడిట్</CreditLabel>
+            {this.state.dcError && <><br/><br/><ErrorLabel>దయచేసి క్రెడిట్/డెబిట్ ఎంచుకోండి</ErrorLabel></>}
+            <LoginButton onClick={()=>{this.proceedSubmit()}}>సబ్మిట్ చేయండి</LoginButton>
+            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.submitted && <Stuff amount={this.state.amount} remainingAmount={this.state.data.amount} name={this.state.data.name} amountType={this.state.amountType}/>}</>}
             </>}

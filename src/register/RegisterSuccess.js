@@ -14,7 +14,7 @@ const Title = styled.div`
     `;
 
 const LastButton = styled.button`
-    margin-left: 28%;
+    margin-left: 20%;
     font-size: 18px;
     margin-bottom: 125%;
     color: red;
@@ -30,12 +30,12 @@ class RegisterSuccess extends Component {
         <div>
             {!this.state.MainPage && <>
                 {this.props.registerPage && <Title>
-                    User Successfully created with Id: {this.props.id}
+                    ఐడితో యూజర్ విజయవంతంగా సృష్టించబడింది: {this.props.id}
                 </Title>}
                 {!this.props.registerPage && <Title>
-                    User is not available with given Id
+                    ఇచ్చిన ఐడితో యూజర్ అందుబాటులో లేరు
                 </Title>}
-                <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
+                <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}
         </div>

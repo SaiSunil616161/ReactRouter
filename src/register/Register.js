@@ -18,11 +18,11 @@ const UserLabel = styled.label`
     color: blue;
     font-family: sans-serif;
     margin-right: 6%;
-    margin-left: 10px;
+    margin-left: 20%;
 `;
 
 const LoginButton = styled.button`
-    margin-left: 30%;
+    margin-left: 6%;
     font-size: 18px;
     margin-top: 3%;
     margin-bottom: 100%;
@@ -62,12 +62,12 @@ class Register extends Component {
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
-            <Title>Register User</Title>
-            <UserLabel>User Name: </UserLabel>
-            <input type="text"  onChange={(event)=>{this.setUsrName(event)}}/>
-            {this.state.userError && <><br/><br/><ErrorLabel>Please Enter UserName</ErrorLabel></>}
-            {this.state.userExistingError && <><br/><br/><ErrorLabel>This name is already taken. Please try modifying name</ErrorLabel></>}
-            <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>Register User</LoginButton>
+            <Title>వినియోగదారుని నమోదు చేయండి</Title>
+            <UserLabel>వినియోగదారుని పేరు </UserLabel>
+            <input type="text" style={{marginLeft: "23%"}}  onChange={(event)=>{this.setUsrName(event)}}/>
+            {this.state.userError && <><br/><br/><ErrorLabel>దయచేసి వినియోగదారు పేరు నమోదు చేయండి</ErrorLabel></>}
+            {this.state.userExistingError && <><br/><br/><ErrorLabel>ఈ పేరు ఇప్పటికే తీసుకోబడింది. దయచేసి పేరును సవరించడానికి ప్రయత్నించండి</ErrorLabel></>}
+            <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>వినియోగదారుని నమోదు చేయండి</LoginButton>
             </>}
             {this.state.submitted && <RegisterSuccess id={this.state.id} registerPage={true}/>}</>}
         </div>

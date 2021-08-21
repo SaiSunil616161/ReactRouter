@@ -22,7 +22,7 @@ const UserLabel = styled.label`
 `;
 
 const LoginButton = styled.button`
-    margin-left: 22%;
+    margin-left: 2%;
     font-size: 18px;
     margin-top: 3%;
     margin-bottom: 100%;
@@ -61,12 +61,12 @@ class TransactionId extends Component {
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
-            <Title>Enter Register Id</Title>
-            <UserLabel>Register Id: </UserLabel>
+            <Title>వినియోగదారు లావాదేవీలు</Title>
+            <UserLabel>రిజిస్టర్డ్ ఐడి: </UserLabel>
             <input type="number"  onChange={(event)=>{this.setUsrName(event)}}/>
-            {this.state.userError && <><br/><br/><ErrorLabel>Please Enter Register Id</ErrorLabel></>}
-            {this.state.error && <><br/><br/><ErrorLabel>Please enter proper Id</ErrorLabel></>}
-            <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>Get User Transactions</LoginButton>
+            {this.state.userError && <><br/><br/><ErrorLabel>దయచేసి రిజిస్టర్ ఐడిని ఇవ్వండి</ErrorLabel></>}
+            {this.state.error && <><br/><br/><ErrorLabel>దయచేసి సరైన రిజిస్టర్ ఐడిని ఇవ్వండి</ErrorLabel></>}
+            <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>వినియోగదారు లావాదేవీలను పొందండి</LoginButton>
             </>}
             {this.state.submitted && <Transactions data={this.state.data}/>}</>}
         </div>

@@ -40,11 +40,11 @@ class Functionalities extends Component {
         return (
         <div>
             {!this.state.clickedFunctionality && <>
-            <Title>Click on button to navigate to corresponding functionalities</Title>
-            <LoginButton onClick={()=>{this.redirectToRegistration()}}>Register Persons</LoginButton>        
-            <LoginButton onClick={()=>{this.redirectToPersonsIds()}}>Get all persons with Id</LoginButton>
-            <LoginButton onClick={()=>{this.redirectToGetTransactions()}}>Get all transactions by Id</LoginButton>
-            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Enter Ledger</LastButton></>}
+            <Title>సంబంధిత కార్యాచరణలకు కింద బటన్లు పై క్లిక్ చేయండి</Title>
+            <LoginButton onClick={()=>{this.redirectToRegistration()}}>వ్యక్తులను నమోదు చేయండి</LoginButton>        
+            <LoginButton onClick={()=>{this.redirectToPersonsIds()}}>ఐడి ఉన్న వ్యక్తులందరినీ పొందండి</LoginButton>
+            <LoginButton onClick={()=>{this.redirectToGetTransactions()}}>ఐడి ద్వారా అన్ని లావాదేవీలను పొందండి</LoginButton>
+            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>లెడ్జర్‌ని నమోదు చేయండి</LastButton></>}
             {this.state.LedgerPage && <Home/>}
             {this.state.registerUser && <Register/>}
             {this.state.getPersons && <Persons/>}

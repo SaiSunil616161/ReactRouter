@@ -63,7 +63,7 @@ class Persons extends Component {
                         {listItems}
                     </tbody>
                 </Table>
-                <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton>
+                <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}
         </div>

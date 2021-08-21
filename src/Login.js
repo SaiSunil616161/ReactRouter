@@ -17,7 +17,7 @@ const UserLabel = styled.label`
     font-size: 20px;
     color: blue;
     font-family: sans-serif;
-    margin-right: 50px;
+    margin-right: 25px;
     margin-left: 10px;
 `;
 
@@ -25,7 +25,7 @@ const PasswordLabel = styled.label`
     font-size: 20px;
     color: blue;
     font-family: sans-serif;
-    margin-right: 30px;
+    margin-right: 55px;
     margin-left: 10px;
 `;
 
@@ -36,7 +36,7 @@ background: #ccff00;
 `;
 
 const LoginButton = styled.button`
-    margin-left: 38%;
+    margin-left: 26%;
     font-size: 18px;
     margin-bottom: 100%;
 `;
@@ -75,18 +75,18 @@ class Login extends Component {
         <MainDiv>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
-            {!this.state.redirectToHome && <><Title>Login</Title>
-            <UserLabel>User ID:</UserLabel>
+            {!this.state.redirectToHome && <><Title>లాగిన్</Title>
+            <UserLabel>లాగిన్ నం. :</UserLabel>
             <input type="text" onChange={(event)=>{this.setUserName(event)}}/>
-            {this.state.userNameError && <><br/><br/><ErrorLabel>Please Enter UserName</ErrorLabel></>}
+            {this.state.userNameError && <><br/><br/><ErrorLabel>సరైన లాగిన్ ఐడి ఇవ్వండి</ErrorLabel></>}
             <br/><br/>
-            <PasswordLabel>Password:</PasswordLabel>
+            <PasswordLabel>పాస్వర్డ్ :</PasswordLabel>
             <input type="password" onChange={(event)=>{this.setPassword(event)}}/>
-            {this.state.passwordError && <><br/><br/><ErrorLabel>Please Enter Password</ErrorLabel></>}
+            {this.state.passwordError && <><br/><br/><ErrorLabel>సరైన పాస్‌వర్డ్ ఇవ్వండి</ErrorLabel></>}
             <br/><br/>
-            {this.state.loginError && <ErrorLabel>Please enter correct details</ErrorLabel>}
+            {this.state.loginError && <ErrorLabel>సరైన సమాచరం ఇవ్వండి</ErrorLabel>}
             <LoginButton onClick={()=>{this.proceedLogin()}}>
-                Log In</LoginButton></>}
+               లాగిన్ చేయండి</LoginButton></>}
             {this.state.redirectToHome && <Functionalities/>}</>}
         </MainDiv>
         );

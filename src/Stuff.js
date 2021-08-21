@@ -33,10 +33,10 @@ class Stuff extends Component {
         return (
         <div>
             {!this.state.MainPage && <>
-            {this.props.amountType === "debit" && <Title>{this.props.name} Paid {this.props.amount}</Title>}
-            {this.props.amountType === "credit" && <Title>We gave {this.props.amount} to {this.props.name}</Title>}
-            <TitleOt>He Still needs to pay {this.props.remainingAmount} rupees</TitleOt>
-            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>Go to Main Page</LastButton></>}
+            {this.props.amountType === "debit" && <Title>{this.props.name} చెల్లించారు {this.props.amount}</Title>}
+            {this.props.amountType === "credit" && <Title>మనము {this.props.name} కి {this.props.amount} ఇచ్చాము </Title>}
+            <TitleOt>అతను ఇంకా చెలించాల్సింది: {this.props.remainingAmount} రూపాయలు</TitleOt>
+            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton></>}
             {this.state.MainPage && <Functionalities/>}
         </div>
         );
