@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { MAIN_URL } from "../constants";
+import { clearCookies, getCookie, LogoutButton, MAIN_URL } from "../constants";
 import LoaderComp from "../Loader";
+import Login from "../Login";
 import Transactions from "./transactions";
  
 const Title = styled.h1`
@@ -43,7 +44,7 @@ class TransactionId extends Component {
         if(this.state.userName === "") {this.setState({userError: true, loader: false})} else {this.setState({userError: false})}
         if(this.state.userName !== "") {
             const ADD_TRANS = `${MAIN_URL}/getTransactions/${this.state.userName}`;
-            axios.get(ADD_TRANS).then(response => {
+            axios.get(ADD_TRANS, {headers: {"auth": getCookie("auth"), "username": getCookie("userName")}}).then(response => {
                 console.log(response)
                 if (response.data) {
                     this.setState({data: response.data, submitted: true, loader: false});
@@ -58,9 +59,11 @@ class TransactionId extends Component {
     render() {
         return (
         <div>
+            {getCookie("auth") !== undefined && <>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
+            <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
             <Title>వినియోగదారు లావాదేవీలు</Title>
             <UserLabel>రిజిస్టర్డ్ ఐడి: </UserLabel>
             <input type="number"  onChange={(event)=>{this.setUsrName(event)}}/>
@@ -69,6 +72,8 @@ class TransactionId extends Component {
             <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>వినియోగదారు లావాదేవీలను పొందండి</LoginButton>
             </>}
             {this.state.submitted && <Transactions data={this.state.data}/>}</>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
         );
     }

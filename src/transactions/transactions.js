@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { clearCookies, getCookie, LogoutButton } from "../constants";
 import Functionalities from "../Functionalities";
+import Login from "../Login";
 
 const Table = styled.table`
 border: double;
@@ -63,9 +65,11 @@ class Transactions extends Component {
     });
       return (
         <div>
+            {getCookie("auth") !== undefined && <>
             {this.props.data.length === 0 && this.state.error && <Label><ErrorLabel> దీనికి సంబంధించిన డేటా ఏదీ లేదు</ErrorLabel>
                 <LastButton1 onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton1></Label>}
             {!this.state.MainPage && this.props.data.length > 0 && <>
+                <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
                 <ErrorLabel>మొత్తం చెల్లించాల్సింది: {this.getFinalBalance(this.props.data)}</ErrorLabel>
                 <Table border="1" frame="void" rules="rows">
                     <tbody id="content">
@@ -81,6 +85,8 @@ class Transactions extends Component {
                 <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
       )
   }

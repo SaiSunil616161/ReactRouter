@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { MAIN_URL } from "../constants";
+import { clearCookies, getCookie, LogoutButton, MAIN_URL } from "../constants";
 import Functionalities from "../Functionalities";
+import Login from "../Login";
 
 const Table = styled.table`
 margin-left: 30%;
@@ -30,7 +31,7 @@ class Persons extends Component {
     }
     componentDidMount() {
         const GET_ALL = `${MAIN_URL}/getAll`;
-        axios.get(GET_ALL).then(response => {
+        axios.get(GET_ALL, {headers: {"auth": getCookie("auth"), "username": getCookie("userName")}}).then(response => {
             if (response.data) {
                 this.setState({data: response.data});
             } else {
@@ -52,8 +53,10 @@ class Persons extends Component {
     });
       return (
         <div>
-            {this.state.error && <ErrorLabel> Error While loading details</ErrorLabel>}
+            {getCookie("auth") !== undefined && <>
+            {this.state.error && !this.state.MainPage && <ErrorLabel> వచిండి వివరాలను లోడ్ చేస్తున్నప్పుడు లోపం. దయచేసి కొంతకాలం తర్వాత ప్రయత్నించండి</ErrorLabel>}
             {!this.state.MainPage && <>
+                <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
                 <Table border="1" frame="void" rules="rows">
                     <tbody id="content">
                         <tr>
@@ -66,6 +69,8 @@ class Persons extends Component {
                 <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
       )
   }

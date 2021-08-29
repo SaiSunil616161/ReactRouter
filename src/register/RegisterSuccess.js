@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { clearCookies, getCookie, LogoutButton } from "../constants";
 import Functionalities from "../Functionalities";
+import Login from "../Login";
 
 const Title = styled.div`
     height: 100%;
@@ -28,6 +30,8 @@ class RegisterSuccess extends Component {
     render() {
         return (
         <div>
+            {getCookie("auth") !== undefined && <>
+            <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
             {!this.state.MainPage && <>
                 {this.props.registerPage && <Title>
                     ఐడితో యూజర్ విజయవంతంగా సృష్టించబడింది: {this.props.id}
@@ -38,6 +42,8 @@ class RegisterSuccess extends Component {
                 <LastButton onClick={()=>{this.redirectToEnterLedger()}}>ప్రధాన పేజీకి వెళ్లండి</LastButton>
             </>}
             {this.state.MainPage && <Functionalities/>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
         );
     }

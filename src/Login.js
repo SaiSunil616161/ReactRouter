@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
 import axios from "axios";
-import { MAIN_URL } from "./constants";
+import { getCookie, MAIN_URL } from "./constants";
 import CreateUser from "./createUser/CreateUser";
 
 const Title = styled.h1`
@@ -68,8 +68,14 @@ class Login extends Component {
             obj.userName = this.state.userName;
             obj.password = this.state.password;
             const LOGIN_URL = `${MAIN_URL}/login`
-            axios.post(LOGIN_URL ,obj, {Headers:{"Access-Control-Allow-Origin": "*"}}).then(response => {
-                if (response.data) {
+            axios.post(LOGIN_URL ,obj, {Headers:{"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers":"X-Total-Results"}}).then(response => {
+                if (response.data !== "error") {
+                    var now = new Date();
+                    var time = now.getTime();
+                    time += 60 * 60 * 1000;
+                    now.setTime(time);
+                    document.cookie = 'auth=' + response.data + '; expires=' + now.toUTCString() + '; path=/; Secure';
+                    document.cookie = 'userName=' + this.state.userName + '; expires=' + now.toUTCString() + '; path=/; Secure';
                     this.setState({redirectToHome: true, loader: false})
                 } else {
                     this.setState({loginError: true, loader: false})
@@ -82,28 +88,32 @@ class Login extends Component {
     createNewUser = () => {
         this.setState({createUser: true})
     }
+
     render() {
         return (
         <MainDiv>
-            {this.state.loader && <LoaderComp/>}
-            {!this.state.loader && <>
-            {!this.state.redirectToHome && !this.state.createUser && <><Title>లాగిన్</Title>
-            <UserLabel>లాగిన్ ఇమెయిల్ :</UserLabel>
-            <input type="text" onChange={(event)=>{this.setUserName(event)}}/>
-            {this.state.userNameError && <><br/><br/><ErrorLabel>సరైన లాగిన్ ఐడి ఇవ్వండి</ErrorLabel></>}
-            <br/><br/>
-            <PasswordLabel>పాస్వర్డ్ :</PasswordLabel>
-            <input type="password" onChange={(event)=>{this.setPassword(event)}}/>
-            {this.state.passwordError && <><br/><br/><ErrorLabel>సరైన పాస్‌వర్డ్ ఇవ్వండి</ErrorLabel></>}
-            <br/><br/>
-            {this.state.loginError && <ErrorLabel>సరైన సమాచరం ఇవ్వండి</ErrorLabel>}
-            <LoginButton onClick={()=>{this.proceedLogin()}}>
-               లాగిన్ చేయండి</LoginButton>
-            <NewUserButton onClick={()=>{this.createNewUser()}}>
-            కొత్త యూజర్ ని క్రియేట్ చేయండి</NewUserButton>   
+            {getCookie("auth") === undefined && <>
+                {this.state.loader && <LoaderComp/>}
+                {!this.state.loader && <>
+                {!this.state.redirectToHome && !this.state.createUser && <><Title>లాగిన్</Title>
+                <UserLabel>లాగిన్ ఇమెయిల్ :</UserLabel>
+                <input type="text" onChange={(event)=>{this.setUserName(event)}}/>
+                {this.state.userNameError && <><br/><br/><ErrorLabel>సరైన లాగిన్ ఐడి ఇవ్వండి</ErrorLabel></>}
+                <br/><br/>
+                <PasswordLabel>పాస్వర్డ్ :</PasswordLabel>
+                <input type="password" onChange={(event)=>{this.setPassword(event)}}/>
+                {this.state.passwordError && <><br/><br/><ErrorLabel>సరైన పాస్‌వర్డ్ ఇవ్వండి</ErrorLabel></>}
+                <br/><br/>
+                {this.state.loginError && <ErrorLabel>సరైన సమాచరం ఇవ్వండి</ErrorLabel>}
+                <LoginButton onClick={()=>{this.proceedLogin()}}>
+                లాగిన్ చేయండి</LoginButton>
+                <NewUserButton onClick={()=>{this.createNewUser()}}>
+                కొత్త యూజర్ ని క్రియేట్ చేయండి</NewUserButton>   
+                </>}
+                {this.state.redirectToHome && !this.state.createUser && <Functionalities/>}
+                {this.state.createUser && <CreateUser/>}</>}
             </>}
-            {this.state.redirectToHome && !this.state.createUser && <Functionalities/>}
-            {this.state.createUser && <CreateUser/>}</>}
+            {getCookie("auth") !== undefined && <><Functionalities/></>}
         </MainDiv>
         );
     }

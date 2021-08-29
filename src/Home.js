@@ -4,8 +4,9 @@ import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
 import Stuff from "./Stuff";
 import axios from "axios";
-import { MAIN_URL } from "./constants";
+import { clearCookies, getCookie, LogoutButton, MAIN_URL } from "./constants";
 import RegisterSuccess from "./register/RegisterSuccess";
+import Login from "./Login";
  
 const Title = styled.h1`
   font-size: 1.5em;
@@ -101,7 +102,7 @@ class Home extends Component {
             obj.date = this.state.dateVal;
             obj.transactionType = this.state.amountType;
             const TRANS_URL = `${MAIN_URL}/addTransaction`
-            axios.post(TRANS_URL ,obj).then(response => {
+            axios.post(TRANS_URL ,obj, {headers: {"auth": getCookie("auth"), "username": getCookie("userName")}}).then(response => {
                 if (response.data) {
                     this.setState({submitted: true, loader: false, data: response.data});
                 } else {
@@ -116,12 +117,14 @@ class Home extends Component {
     render() {
         return (
         <div>
+            {getCookie("auth") !== undefined && <>
             {this.state.beerror && <><RegisterSuccess registerPage={false}/></>}
             {this.state.MainPage && <Functionalities/>}
             {!this.state.MainPage && <>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
+            <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
             <Title>లెడ్జర్</Title>
             <UserLabel>ఐడి: </UserLabel>
             <input type="number"  onChange={(event)=>{this.setId(event)}}/>
@@ -144,6 +147,8 @@ class Home extends Component {
             </>}
             {this.state.submitted && <Stuff amount={this.state.amount} remainingAmount={this.state.data.amount} name={this.state.data.name} amountType={this.state.amountType}/>}</>}
             </>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
         );
     }

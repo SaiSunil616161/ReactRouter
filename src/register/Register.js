@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { MAIN_URL } from "../constants";
+import { clearCookies, getCookie, LogoutButton, MAIN_URL } from "../constants";
 import LoaderComp from "../Loader";
+import Login from "../Login";
 import RegisterSuccess from "./RegisterSuccess";
  
 const Title = styled.h1`
@@ -45,7 +46,7 @@ class Register extends Component {
             const ADD_USER = `${MAIN_URL}/addUser`;
             let obj = {};
             obj.name = this.state.userName;
-            axios.post(ADD_USER ,obj).then(response => {
+            axios.post(ADD_USER ,obj, {headers: {"auth": getCookie("auth"), "username": getCookie("userName")}}).then(response => {
                 if (response.data.id) {
                     this.setState({userExistingError: false, submitted: true, loader: false, id: response.data.id});
                 } else {
@@ -59,9 +60,11 @@ class Register extends Component {
     render() {
         return (
         <div>
+            {getCookie("auth") !== undefined && <>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
             {!this.state.submitted && <>
+            <LogoutButton onClick={()=>{clearCookies()}}>లాగ్ అవుట్</LogoutButton>
             <Title>వినియోగదారుని నమోదు చేయండి</Title>
             <UserLabel>వినియోగదారుని పేరు </UserLabel>
             <input type="text" style={{marginLeft: "23%"}}  onChange={(event)=>{this.setUsrName(event)}}/>
@@ -70,6 +73,8 @@ class Register extends Component {
             <br/><br/><LoginButton onClick={()=>{this.proceedSubmit()}}>వినియోగదారుని నమోదు చేయండి</LoginButton>
             </>}
             {this.state.submitted && <RegisterSuccess id={this.state.id} registerPage={true}/>}</>}
+            </>}
+            {getCookie("auth") === undefined && <Login/>}
         </div>
         );
     }
