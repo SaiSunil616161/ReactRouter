@@ -4,6 +4,7 @@ import Functionalities from "./Functionalities";
 import LoaderComp from "./Loader";
 import axios from "axios";
 import { MAIN_URL } from "./constants";
+import CreateUser from "./createUser/CreateUser";
 
 const Title = styled.h1`
   font-size: 1.5em;
@@ -14,10 +15,10 @@ const Title = styled.h1`
 `;
 
 const UserLabel = styled.label`
-    font-size: 20px;
+    font-size: 16px;
     color: blue;
     font-family: sans-serif;
-    margin-right: 25px;
+    margin-right: 5px;
     margin-left: 10px;
 `;
 
@@ -36,10 +37,16 @@ background: #ccff00;
 `;
 
 const LoginButton = styled.button`
-    margin-left: 26%;
+    margin-left: 27%;
+    font-size: 18px;
+    margin-bottom: 10%;
+`;
+
+const NewUserButton = styled.button`
+    margin-left: 7%;
     font-size: 18px;
     margin-bottom: 100%;
-`;
+`
 
 const ErrorLabel = styled.label`
 margin-left: 23%;
@@ -48,7 +55,7 @@ margin-left: 23%;
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state={userName:"", password:"", redirectToHome: false, loginError: false}
+        this.state={userName:"", password:"", createUser: false, redirectToHome: false, loginError: false}
     }
     setUserName = (event) => {this.setState({userName: event.target.value})};
     setPassword = (event) => {this.setState({password: event.target.value})};
@@ -67,16 +74,21 @@ class Login extends Component {
                 } else {
                     this.setState({loginError: true, loader: false})
                 }
-            })
+            }).catch(error => {
+                this.setState({loginError: true, loader: false})
+            });
         }
+    }
+    createNewUser = () => {
+        this.setState({createUser: true})
     }
     render() {
         return (
         <MainDiv>
             {this.state.loader && <LoaderComp/>}
             {!this.state.loader && <>
-            {!this.state.redirectToHome && <><Title>లాగిన్</Title>
-            <UserLabel>లాగిన్ నం. :</UserLabel>
+            {!this.state.redirectToHome && !this.state.createUser && <><Title>లాగిన్</Title>
+            <UserLabel>లాగిన్ ఇమెయిల్ :</UserLabel>
             <input type="text" onChange={(event)=>{this.setUserName(event)}}/>
             {this.state.userNameError && <><br/><br/><ErrorLabel>సరైన లాగిన్ ఐడి ఇవ్వండి</ErrorLabel></>}
             <br/><br/>
@@ -86,8 +98,12 @@ class Login extends Component {
             <br/><br/>
             {this.state.loginError && <ErrorLabel>సరైన సమాచరం ఇవ్వండి</ErrorLabel>}
             <LoginButton onClick={()=>{this.proceedLogin()}}>
-               లాగిన్ చేయండి</LoginButton></>}
-            {this.state.redirectToHome && <Functionalities/>}</>}
+               లాగిన్ చేయండి</LoginButton>
+            <NewUserButton onClick={()=>{this.createNewUser()}}>
+            కొత్త యూజర్ ని క్రియేట్ చేయండి</NewUserButton>   
+            </>}
+            {this.state.redirectToHome && !this.state.createUser && <Functionalities/>}
+            {this.state.createUser && <CreateUser/>}</>}
         </MainDiv>
         );
     }

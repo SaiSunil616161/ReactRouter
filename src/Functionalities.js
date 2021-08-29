@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { Component } from "react";
 import styled from "styled-components";
+import { MAIN_URL } from "./constants";
 import Home from "./Home";
 import Persons from "./persons/persons";
 import Register from "./register/Register";
@@ -30,12 +32,24 @@ const LastButton = styled.button`
 class Functionalities extends Component {
     constructor(props) {
         super(props);
-        this.state={LedgerPage: false, clickedFunctionality: false, registerUser: false, getPersons: false, transactions: false}
+        this.state={LedgerPage: false, getEmail: true, clickedFunctionality: false, registerUser: false, getPersons: false, transactions: false}
     }
     redirectToEnterLedger = () => {this.setState({LedgerPage: true,clickedFunctionality: true})}
     redirectToRegistration = () => {this.setState({registerUser: true,clickedFunctionality: true})}
     redirectToPersonsIds = () => {this.setState({getPersons: true,clickedFunctionality: true})}
     redirectToGetTransactions = () => {this.setState({transactions: true,clickedFunctionality: true})}
+    getLedgerThroughEmail = () => {
+        const SEND_EMAIL = `${MAIN_URL}/sendEmail`;
+        axios.get(SEND_EMAIL).then(response => {
+            if (response.data) {
+                alert("Email sent succesfully");
+            } else {
+                alert("Error while sending email. Please try after sometime");
+            }
+        }).catch(error => {
+            alert("Error while sending email. Please try after sometime");
+        });
+    }
     render() {
         return (
         <div>
@@ -44,7 +58,8 @@ class Functionalities extends Component {
             <LoginButton onClick={()=>{this.redirectToRegistration()}}>వ్యక్తులను నమోదు చేయండి</LoginButton>        
             <LoginButton onClick={()=>{this.redirectToPersonsIds()}}>ఐడి ఉన్న వ్యక్తులందరినీ పొందండి</LoginButton>
             <LoginButton onClick={()=>{this.redirectToGetTransactions()}}>ఐడి ద్వారా అన్ని లావాదేవీలను పొందండి</LoginButton>
-            <LastButton onClick={()=>{this.redirectToEnterLedger()}}>లెడ్జర్‌ని నమోదు చేయండి</LastButton></>}
+            <LoginButton onClick={()=>{this.redirectToEnterLedger()}}>లెడ్జర్‌ని నమోదు చేయండి</LoginButton>
+            <LastButton onClick={()=>{this.getLedgerThroughEmail()}}>బ్యాలెన్స్ షీట్ ఇమెయిల్ ద్వార పొందండి</LastButton></>}
             {this.state.LedgerPage && <Home/>}
             {this.state.registerUser && <Register/>}
             {this.state.getPersons && <Persons/>}
