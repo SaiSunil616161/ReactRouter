@@ -68,7 +68,7 @@ class Login extends Component {
             obj.userName = this.state.userName;
             obj.password = this.state.password;
             const LOGIN_URL = `${MAIN_URL}/login`
-            axios.post(LOGIN_URL ,obj).then(response => {
+            axios.post(LOGIN_URL ,obj, {Headers:{"Access-Control-Allow-Origin": "*"}}).then(response => {
                 if (response.data) {
                     this.setState({redirectToHome: true, loader: false})
                 } else {
